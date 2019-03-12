@@ -8,9 +8,15 @@ from django.contrib.auth.decorators import login_required
 def index(request):
     if request.method == "POST":
         if "SignIn" in request.POST:
-            print(request.POST)
+            user = authenticate(username=request.POST["username"], password=request.POST["password"])
+            print(user)
+            if user is not None:
+                return redirect(PersonalPage, user.pk)
+            else:
+                return render(request, template_name="index.html")
         if "SignUp" in request.POST:
-            u = User(username=request.POST["username"], first_name=request.POST["name"], password=request.POST["password"], email=request.POST["email"])
+            u = User(username=request.POST["username"], first_name=request.POST["name"], email=request.POST["email"])
+            u.set_password(request.POST["password"])
             User.save(u)
             login(request, u)
             return redirect(PersonalPage, u.pk)
