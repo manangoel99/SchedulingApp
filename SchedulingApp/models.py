@@ -6,3 +6,5 @@ class Event(models.Model):
     datetime = models.DateTimeField()
     description = models.CharField(max_length=300)
     venue = models.CharField(max_length=200)
+    title = models.CharField(max_length=50)
+    phoneNumber = models.IntegerField()

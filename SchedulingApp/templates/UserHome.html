@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Welcome {{ request.user }}</title>
 </head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <style>
     @import url(https://fonts.googleapis.com/css?family=Roboto:400,300,600,400italic);
     * {
@@ -151,26 +152,76 @@
     :-ms-input-placeholder {
       color: #888;
     }
+
+    h1{
+      font-size: 30px;
+      color: #fff;
+      text-transform: uppercase;
+      font-weight: 300;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    table{
+      width:100%;
+      table-layout: fixed;
+    }
+    .tbl-header{
+      background-color: rgba(255,255,255,0.3);
+     }
+    .tbl-content{
+      height:300px;
+      overflow-x:auto;
+      margin-top: 0px;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+    th{
+      padding: 20px 15px;
+      text-align: left;
+      font-weight: 500;
+      font-size: 12px;
+      color: #fff;
+      text-transform: uppercase;
+    }
+    td{
+      padding: 15px;
+      text-align: left;
+      vertical-align:middle;
+      font-weight: 300;
+      font-size: 12px;
+      color: #fff;
+      border-bottom: solid 1px rgba(255,255,255,0.1);
+    }
+
+
+    /* demo styles */
+
+    @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,300,700);
+    body{
+      background: -webkit-linear-gradient(left, #25c481, #25b7c4);
+      background: linear-gradient(to right, #25c481, #25b7c4);
+      font-family: 'Roboto', sans-serif;
+    }
 </style>
 <body>
     <div class="container">
-        <form id="contact" action="" method="post">
+        <form id="contact" action="{% url 'AddEvent' %}" method="post">
+            {% csrf_token %}
             <h3>Hey {{ request.user}} </h3>
             <h4>Add another event to the Schedule</h4>
             <fieldset>
-                <input placeholder="Event Name" type="text" tabindex="1" required autofocus>
+                <input name="Name" placeholder="Event Name" type="text" tabindex="1" required autofocus>
             </fieldset>
             <fieldset>
-                <input placeholder="Venue" type="text" tabindex="2" required>
+                <input name="Venue" placeholder="Venue" type="text" tabindex="2" required>
             </fieldset>
             <fieldset>
-                <input placeholder="Phone Number (optional)" type="tel" tabindex="3" required>
+                <input name="Phone Number" placeholder="Phone Number (optional)" type="tel" tabindex="3" required>
             </fieldset>
             <fieldset>
-                <input placeholder="Date" type="datetime-local" tabindex="4" required>
+                <input name="datetime" placeholder="Date" type="datetime-local" tabindex="4" required>
             </fieldset>
             <fieldset>
-                <textarea placeholder="Description" tabindex="5" required></textarea>
+                <textarea name="description" placeholder="Description" tabindex="5" required></textarea>
             </fieldset>
             <fieldset>
                 <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Submit</button>
@@ -178,5 +229,79 @@
             <p class="copyright">Designed by <a href="https://colorlib.com" target="_blank" title="Colorlib">Colorlib</a></p>
         </form>
     </div>
+    <div class="container-fluid">
+        <h1>Upcoming Events</h1>
+        <div class="tbl-header">
+          <table cellpadding="0" cellspacing="0" border="0">
+            <thead>
+              <tr data-href="">
+                <th>Name</th>
+                <th>Venue</th>
+                <th>Time</th>
+                <th>Contact Number</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="tbl-content">
+          <table cellpadding="0" cellspacing="0" border="0">
+            <tbody>
+              {% for event in EventsUpcoming %}
+                <tr class="clickable-row" data-href="{% url 'EditEvent' event.pk %}">
+                  <td>{{ event.title }}</td>
+                  <td>{{ event.venue }}</td>
+                  <td>{{ event.datetime }}</td>
+                  <td>{{ event.phoneNumber }}</td>
+                  <td>{{ event.description }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <h1>Past Events</h1>
+        <div class="tbl-header">
+          <table cellpadding="0" cellspacing="0" border="0">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Venue</th>
+                <th>Time</th>
+                <th>Contact Number</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="tbl-content">
+          <table cellpadding="0" cellspacing="0" border="0">
+            <tbody>
+              {% for event in EventsGone %}
+                <tr class="clickable-row" data-href="{% url 'EditEvent' event.pk %}">
+                  <td>{{ event.title }}</td>
+                  <td>{{ event.venue }}</td>
+                  <td>{{ event.datetime }}</td>
+                  <td>{{ event.phoneNumber }}</td>
+                  <td>{{ event.description }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+    </div>
+    <script>
+      $(window).on("load resize ", function () {
+          var scrollWidth = $('.tbl-content').width() - $('.tbl-content table').width();
+          $('.tbl-header').css({ 'padding-right': scrollWidth });
+        }).resize();
+
+        jQuery(document).ready(function($) {
+        $(".clickable-row").click(function() {
+            window.location = $(this).data("href");
+          });
+        });
+    </script>
 </body>
 </html>
