@@ -6,6 +6,35 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from .models import Event
 from datetime import datetime as present
+import threading
+import smtplib
+import pytz
+
+
+def send_mail():
+    threading.Timer(60.0, send_mail).start()
+
+
+
+    s = smtplib.SMTP('smtp.gmail.com', 587)
+    s.starttls()
+
+    try:
+        s.login("enter_email_id", "enter_password")
+
+        for event in Event.objects.all():
+            now = present.utcnow().replace(tzinfo=pytz.utc)
+            timediff = event.datetime - now
+
+            print(timediff.total_seconds())
+            if timediff.total_seconds() < 920 and timediff.total_seconds > 880:
+                message = "Hey " + event.user.first_name + "<br>" + " You have an upcoming titled "+ event.title+ " at "+ str(event.datetime)+ "<br>"+ " Please reach the venue: "+ event.venue+ " on time." 
+                s.sendmail("enter_email_id", event.user.email, message)
+    except:
+        pass
+    s.quit()
+
+send_mail()
 
 # Create your views here.
 def index(request):
