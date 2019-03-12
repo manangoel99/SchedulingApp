@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -64,3 +64,12 @@ def EditEvent(request, id):
         event.description = request.POST["description"]
         event.save()
         return redirect(PersonalPage, request.user.pk)
+
+@login_required(login_url="")
+def DeleteEvent(request, id):
+    event = Event.objects.get(pk=id)
+    event.delete()
+
+    return JsonResponse({
+        "deleted" : True
+    })
