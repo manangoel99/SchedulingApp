@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from .models import Event
@@ -73,3 +73,8 @@ def DeleteEvent(request, id):
     return JsonResponse({
         "deleted" : True
     })
+
+@login_required(login_url="")
+def LogOut(request):
+    logout(request)
+    return redirect(index)
