@@ -240,6 +240,7 @@
                 <th>Time</th>
                 <th>Contact Number</th>
                 <th>Description</th>
+                <th>Delete this Event</th>
               </tr>
             </thead>
           </table>
@@ -254,6 +255,11 @@
                   <td>{{ event.datetime }}</td>
                   <td>{{ event.phoneNumber }}</td>
                   <td>{{ event.description }}</td>
+                  <td>
+                    <button onclick=deleteEvent({{ event.pk }}) id="{{ event.pk }}">
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               {% endfor %}
             </tbody>
@@ -271,6 +277,7 @@
                 <th>Time</th>
                 <th>Contact Number</th>
                 <th>Description</th>
+                <th>Delete this Event</th>
               </tr>
             </thead>
           </table>
@@ -285,6 +292,11 @@
                   <td>{{ event.datetime }}</td>
                   <td>{{ event.phoneNumber }}</td>
                   <td>{{ event.description }}</td>
+                  <td>
+                    <button id="{{ event.pk }}">
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               {% endfor %}
             </tbody>
@@ -302,6 +314,12 @@
             window.location = $(this).data("href");
           });
         });
+
+        function deleteEvent(id) {
+          fetch("../DeleteEvent/" + id).then(function(data) {
+                window.location.href = window.location.href.slice(0, -7);
+            });
+        }
     </script>
 </body>
 </html>
