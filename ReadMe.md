@@ -11,6 +11,9 @@ Deleting unwanted tasks is also a possibility.
 
 That database is mantained in postgreSQL. The details for which are present in the settings.py file.
 
+It also automatically sends a reminder to the user 15 minutes before the event.
+
+Note : Enter the sender's email id and password in views.py in the send_mail function and enable third party authentication for your gmail account. The email sending API works only if the sender's email client is gmail. Please change the smtp server accordingly if your email client is not gmail.
 ----------------------------------------
 How To Run
 =================
