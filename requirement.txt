@@ -97,7 +97,7 @@ qrplatba==0.3.4
 reportlab==3.4.0
 requests==2.19.1
 requests-oauthlib==1.0.0
-rsa==3.4.2
+rsa==4.7
 screen-resolution-extra==0.0.0
 selenium==3.14.1
 sessioninstaller==0.0.0
