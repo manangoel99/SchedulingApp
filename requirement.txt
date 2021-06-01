@@ -113,7 +113,7 @@ toml==0.10.0
 tox==3.5.3
 ubuntu-drivers-common==0.0.0
 ufw==0.35
-urllib3==1.23
+urllib3==1.26.5
 virtkey==0.63.0
 virtualenv==16.0.0
 virtualenv-clone==0.3.0
