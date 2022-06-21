@@ -52,7 +52,7 @@ MarkupSafe==1.0
 mccabe==0.6.1
 mongoengine==0.15.3
 more-itertools==4.3.0
-numpy==1.15.0
+numpy==1.22.0
 oauthlib==1.0.3
 onboard==1.2.0
 oneconf==0.3.9
